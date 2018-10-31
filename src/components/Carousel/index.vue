@@ -2,7 +2,7 @@
   <swiper :options="swiperOptions" ref="mySwiper" @slideChange="slideChange" class="carousel">
     <swiper-slide
     v-for="data in slidesData"
-    :key="data.title">
+    :key="data.id">
       <slot name="slide" v-bind="data"/>
     </swiper-slide>
   </swiper>
@@ -11,7 +11,6 @@
 <script>
 import 'swiper/dist/css/swiper.css';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import Card from 'src/components/Card';
 
 const slidesPerView = 3;
 
@@ -20,7 +19,6 @@ export default {
   components: {
     swiper,
     swiperSlide,
-    Card,
   },
   props: {
     slidesData: {
@@ -33,8 +31,10 @@ export default {
       return
     }
     this.emitRequestLoad({
-      offset: this.slidesData.length,
-      limit: slidesPerView,
+      // offset: this.slidesData.length,
+      // limit: slidesPerView,
+      perPage: slidesPerView * 2,
+      page: 0
     });
   },
   methods: {
@@ -44,13 +44,15 @@ export default {
 
       if (moreLoadedSlides <= slidesPerView ) {
         this.emitRequestLoad({
-          offset: this.slidesData.length,
-          limit: slidesPerView,
+          // offset: this.slidesData.length,
+          // limit: slidesPerView,
+          perPage: slidesPerView,
+          page: Math.floor(this.slidesData.length / slidesPerView) + 1
         });
       }
     },
-    emitRequestLoad({offset, limit}) {
-      this.$emit('requestLoad', {offset, limit});
+    emitRequestLoad(...args) {
+      this.$emit('requestLoad', ...args);
     }
   },
   computed: {
@@ -69,8 +71,6 @@ export default {
 
 <style lang="scss">
   .carousel {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
     &>* {
       margin: 16px;
     }

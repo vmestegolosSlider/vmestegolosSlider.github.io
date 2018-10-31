@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <CarouselConnected>
+        <Card
+        slot="slide"
+        slot-scope="data"
+        v-bind="data"
+        />
+    </CarouselConnected>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CarouselConnected from './components/Carousel/connected'
+import Card from './components/Card'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    CarouselConnected,
+    Card
   }
 }
 </script>
 
 <style lang="scss">
+body {
+  margin: 0;
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: #F0F0F0;
+  min-height: 100vh;
+  padding: 40px 0;
+  box-sizing: border-box;
 }
 </style>

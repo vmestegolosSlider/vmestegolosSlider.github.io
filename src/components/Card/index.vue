@@ -1,6 +1,6 @@
 <template>
   <a
-  href="https://vmeste-region.ru/votes/423"
+  :href="href"
   class="card"
   target="_blank"
   rel="noopener noreferrer"
@@ -10,7 +10,7 @@
       {{timeDurationText}}
     </p>
 
-    <img :src=thumbnailSrc alt="Vote thumbnail" class="card__thumbnail">
+    <img :src="thumbnail.url" alt="Vote thumbnail" class="card__thumbnail">
 
     <p class="card__title">
       {{title}}
@@ -27,24 +27,28 @@ import { format } from 'date-fns'
 import ru from 'date-fns/locale/ru'
 
 export default {
-  name: "Card",
+  name: 'Card',
   props: {
+    id: {type: Number, required: true},
     title: {type: String, required: true},
     date: {type: String, required: true},
     expire: {type: String, required: true},
-    thumbnailSrc: {type: String, required: true},
+    thumbnail: {type: Object, required: true}
   },
   computed: {
+    href() {
+      return `https://vmeste-region.ru/votes/${this.id}`;
+    },
     timeDurationText() {
-      const actualYear = (new Date).getUTCFullYear();
-      const from = new Date(this.date);
-      const to = new Date(this.expire);
+      const actualYear = (new Date).getUTCFullYear()
+      const from = new Date(this.date)
+      const to = new Date(this.expire)
 
-      const displayYear = (actualYear !== from.getUTCFullYear()) || (actualYear !== to.getUTCFullYear());
+      const displayYear = (actualYear !== from.getUTCFullYear()) || (actualYear !== to.getUTCFullYear())
 
-      const myFormat = (d) => format(d, displayYear ? "D MMMM YYYY" : "D MMMM", { locale: ru });
+      const myFormat = (d) => format(d, displayYear ? 'D MMMM YYYY' : 'D MMMM', { locale: ru })
 
-      return `С ${myFormat(from)} по ${myFormat(to)}`;
+      return `С ${myFormat(from)} по ${myFormat(to)}`
     }
   }
 }
@@ -69,9 +73,10 @@ export default {
       }
     }
 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-decoration: initial;
     color: initial;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
     p {
       margin: 0;
     }
