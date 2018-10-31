@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/vue';
-// import { action } from '@storybook/addon-actions';
+import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 
 import Carousel from './index.vue';
@@ -7,24 +7,26 @@ import Card from 'src/components/Card';
 
 const slidesData = [
   { title: "title1", },
+  { title: "title2", },
   { title: "title3", },
   { title: "title4", },
   { title: "title5", },
   { title: "title6", },
 ];
 
-const cardData = {
-  title: "Как повысить транспортную доступность сельских поселений Пестравского района?",
+const cardDataFactory = (index) => ({
+  title: `Как повысить транспортную доступность сельских поселений Пестравского района в ${index+2} раз?`,
   date: "2018-10-25 16:52:00",
   expire: "2018-11-25 16:52:00",
   thumbnailSrc: "https://pp.userapi.com/c848536/v848536148/9ecfc/dR39WRyu51A.jpg",
-};
+});
 const slidesDataPretty = [
-  cardData,
-  cardData,
-  cardData,
-  cardData,
-  cardData,
+  cardDataFactory(0),
+  cardDataFactory(1),
+  cardDataFactory(2),
+  cardDataFactory(3),
+  cardDataFactory(4),
+  cardDataFactory(5),
 ];
 
 storiesOf('components/Carousel', module)
@@ -33,12 +35,15 @@ storiesOf('components/Carousel', module)
       Carousel,
     },
     template: `
-      <Carousel :slidesData="slidesData">
+      <Carousel :slidesData="slidesData" @requestLoad="requestLoad">
         <div slot="slide" slot-scope="data">
           {{data.title}}
         </div>
       </Carousel>
     `,
+    methods: {
+      requestLoad: action('requestLoad'),
+    },
     data: () => ({
       slidesData,
     }),
@@ -49,10 +54,13 @@ storiesOf('components/Carousel', module)
       Card,
     },
     template: `
-      <Carousel :slidesData="slidesDataPretty">
+      <Carousel :slidesData="slidesDataPretty" @requestLoad="requestLoad">
         <Card slot="slide" slot-scope="data" v-bind="data"/>
       </Carousel>
     `,
+    methods: {
+      requestLoad: action('requestLoad'),
+    },
     data: () => ({
       slidesData,
       slidesDataPretty,

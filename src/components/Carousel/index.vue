@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOptions" ref="mySwiper" @someSwiperEvent="callback" class="carousel">
+  <swiper :options="swiperOptions" ref="mySwiper" @slideChange="slideChange" class="carousel">
     <swiper-slide
     v-for="data in slidesData"
     :key="data.title">
@@ -12,6 +12,8 @@
 import 'swiper/dist/css/swiper.css';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import Card from 'src/components/Card';
+
+const slidesPerView = 3;
 
 export default {
   name: "Carousel",
@@ -26,17 +28,42 @@ export default {
       default: [],
     }
   },
-  methods: {
-    callback(e) {
-      console.log("callback", e);
+  mounted() {
+    if (this.slidesData.length >= 2 * slidesPerView) {
+      return
     }
+    this.emitRequestLoad({
+      offset: this.slidesData.length,
+      limit: slidesPerView,
+    });
+  },
+  methods: {
+    slideChange() {
+      console.log("slideChange", this.activeIndex);
+      const moreLoadedSlides = this.slidesData.length - this.activeIndex;
+
+      if (moreLoadedSlides <= slidesPerView ) {
+        this.emitRequestLoad({
+          offset: this.slidesData.length,
+          limit: slidesPerView,
+        });
+      }
+    },
+    emitRequestLoad({offset, limit}) {
+      this.$emit('requestLoad', {offset, limit});
+    }
+  },
+  computed: {
+    activeIndex() {
+      return this.$refs.mySwiper.swiper.activeIndex;
+    },
   },
   data: () => ({
     swiperOptions: {
-      slidesPerView: 3,
+      slidesPerView,
       spaceBetween: 16,
     },
-  })
+  }),
 }
 </script>
 

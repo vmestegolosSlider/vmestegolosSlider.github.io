@@ -56,12 +56,11 @@ export default {
 
     background-color: white;
     max-width: 360px;
-    // height: 428px;
     padding: 24px;
     border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.16);
 
-    transition: 250ms;
+    transition: 150ms;
     &:hover {
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 
@@ -81,8 +80,6 @@ export default {
       font-size: 14px;
       line-height: 17px;
       font-weight: 400;
-      user-select: text;
-      cursor: text;
     }
 
     .card__thumbnail {
@@ -97,8 +94,6 @@ export default {
       font-size: 18px;
       line-height: 29px;
       font-weight: 500;
-      user-select: text;
-      cursor: text;
     }
 
     .card__actiontext {
