@@ -1,0 +1,112 @@
+<template type="html">
+  <a
+  href="https://vmeste-region.ru/votes/423"
+  class="card"
+  target="_blank"
+  rel="noopener noreferrer"
+  @dragstart.prevent
+  >
+    <p class="card__time" @click.prevent>
+      {{timeDurationText}}
+    </p>
+
+    <img :src=thumbnailSrc alt="Vote thumbnail" class="card__thumbnail">
+
+    <p class="card__title" @click.prevent>
+      {{title}}
+    </p>
+
+    <p class="card__actiontext">
+      Перейти
+    </p>
+  </a>
+</template>
+
+<script>
+import { format } from 'date-fns'
+import ru from 'date-fns/locale/ru'
+
+export default {
+  name: "Card",
+  props: {
+    title: {type: String, required: true},
+    date: {type: String, required: true},
+    expire: {type: String, required: true},
+    thumbnailSrc: {type: String, required: true},
+  },
+  computed: {
+    timeDurationText() {
+      const actualYear = (new Date).getUTCFullYear();
+      const from = new Date(this.date);
+      const to = new Date(this.expire);
+
+      const displayYear = (actualYear !== from.getUTCFullYear()) || (actualYear !== to.getUTCFullYear());
+
+      const myFormat = (d) => format(d, displayYear ? "D MMMM YYYY" : "D MMMM", { locale: ru });
+
+      return `С ${myFormat(from)} по ${myFormat(to)}`;
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+  .card {
+    display: block;
+
+    background-color: white;
+    width: 360px;
+    // height: 428px;
+    padding: 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+    transition: 250ms;
+    &:hover {
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+
+      &>.card__actiontext {
+        text-decoration: underline;
+      }
+    }
+
+    text-decoration: initial;
+    color: initial;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    p {
+      margin: 0;
+    }
+
+    .card__time {
+      font-size: 14px;
+      line-height: 17px;
+      font-weight: 400;
+      user-select: text;
+      cursor: text;
+    }
+
+    .card__thumbnail {
+      object-fit: cover;
+      height: 200px;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .card__title {
+      margin-top: 24px;
+      font-size: 18px;
+      line-height: 29px;
+      font-weight: 500;
+      user-select: text;
+      cursor: text;
+    }
+
+    .card__actiontext {
+      margin-top: 24px;
+      color: #0077FF;
+      font-size: 16px;
+      line-height: 19px;
+      font-weight: 500;
+    }
+  }
+</style>
