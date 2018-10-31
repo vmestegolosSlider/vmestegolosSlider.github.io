@@ -1,4 +1,4 @@
-<template type="html">
+<template>
   <a
   href="https://vmeste-region.ru/votes/423"
   class="card"
@@ -6,13 +6,13 @@
   rel="noopener noreferrer"
   @dragstart.prevent
   >
-    <p class="card__time" @click.prevent>
+    <p class="card__time">
       {{timeDurationText}}
     </p>
 
     <img :src=thumbnailSrc alt="Vote thumbnail" class="card__thumbnail">
 
-    <p class="card__title" @click.prevent>
+    <p class="card__title">
       {{title}}
     </p>
 
@@ -55,7 +55,7 @@ export default {
     display: block;
 
     background-color: white;
-    width: 360px;
+    max-width: 360px;
     // height: 428px;
     padding: 24px;
     border-radius: 6px;
