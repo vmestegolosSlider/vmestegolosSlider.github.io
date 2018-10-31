@@ -23,15 +23,7 @@ export default new Vuex.Store({
         }
       },
       actions: {
-        // loadItems (ctx, { offset = 0, limit = 6 } = {}) {
         loadItems (ctx, { page = 0, perPage = 6 } = {}) {
-          // const firstToLoad = offset
-          // const lastToLoad = offset + limit
-
-          // const perPage = 6;
-          // const startPage = Math.floor(firstToLoad / perPage)
-
-          // console.log('loadItems', { offset, limit })
           console.log('loadItems', { page, perPage })
 
           axios.get('https://rest.vmeste-region.ru/api/votes', {
@@ -47,21 +39,15 @@ export default new Vuex.Store({
                 data: { votes }
               } = response.data
 
-              console.log(response.data, {
-                old: ctx.state.items,
-                votes,
-                new: _.union(ctx.state.items, votes)
-              })
-
               if (!success || (votes.length === 0)) {
                 return
               }
-
-              ctx.commit('setItems', _.union(ctx.state.items, votes))
+              const newVotes = _.uniqBy(
+                _.concat(ctx.state.items, votes),
+                'id'
+              )
+              ctx.commit('setItems', newVotes)
             })
-
-          // https://rest.vmeste-region.ru/api/votes?perPage=6&expired=true
-          // https://rest.vmeste-region.ru/api/votes?perPage=6&expired=true&page=2
         }
       }
     }

@@ -31,23 +31,18 @@ export default {
       return
     }
     this.emitRequestLoad({
-      // offset: this.slidesData.length,
-      // limit: slidesPerView,
       perPage: slidesPerView * 2,
       page: 0
     });
   },
   methods: {
     slideChange() {
-      console.log("slideChange", this.activeIndex);
       const moreLoadedSlides = this.slidesData.length - this.activeIndex;
 
-      if (moreLoadedSlides <= slidesPerView ) {
+      if (moreLoadedSlides <= (slidesPerView + slidesPerView)) {
         this.emitRequestLoad({
-          // offset: this.slidesData.length,
-          // limit: slidesPerView,
           perPage: slidesPerView,
-          page: Math.floor(this.slidesData.length / slidesPerView) + 1
+          page: Math.floor(this.slidesData.length / slidesPerView) + 2
         });
       }
     },
